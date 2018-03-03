@@ -13,7 +13,7 @@ import (
 func init() {
 	orm.RegisterDriver("sqlite", orm.DRSqlite)
 	orm.RegisterDataBase("default", "sqlite3", "models/aut_db.db")
-	orm.RegisterModel(new(models.Team), new(models.Challenge), new(models.Score))
+	orm.RegisterModel(new(models.Team), new(models.Challenge), new(models.Score), new(models.Draw))
 }
 
 

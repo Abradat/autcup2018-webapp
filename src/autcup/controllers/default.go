@@ -7,8 +7,9 @@ import (
 	models "autcup/models"
 	"github.com/astaxie/beego/validation"
 	"fmt"
-
+	"math/rand"
 	"sort"
+	"time"
 )
 
 
@@ -206,6 +207,67 @@ func (c *MainController) ResultPage() {
 
 
 	c.TplName = "results.html"
+
+}
+
+func (c *MainController) DrawPage() {
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	var draws []*models.Draw
+	o.QueryTable("draws").All(&draws)
+
+
+	c.Data["draws"] = draws
+
+
+	c.TplName = "lottery.html"
+}
+
+func (c *MainController) GenerateDraw() {
+
+	o := orm.NewOrm()
+	o.Using("default")
+
+	var teams []*models.Team
+	var teamsTmp, teamsFinal []string
+	num, err := o.QueryTable("teams").All(&teams)
+
+	if err != orm.ErrNoRows && num > 0 {
+
+		for _, team := range teams {
+			teamsTmp = append(teamsTmp, team.TeamName)
+		}
+
+		rand.Seed(time.Now().Unix())
+
+		for _, teamk := range teams {
+			fmt.Printf(teamk.TeamName)
+			index := rand.Intn(len(teamsTmp))
+			teamsFinal = append(teamsFinal, teamsTmp[index])
+			teamsTmp = append(teamsTmp[:index], teamsTmp[index + 1:]...)
+
+		}
+		fmt.Printf("%v\n\n\n\n", teamsFinal)
+
+		for cnt, teamFinal := range teamsFinal {
+
+			draw := models.Draw{}
+			draw.Id = cnt + 1
+			draw.TeamName = teamFinal
+			o.Insert(&draw)
+		}
+
+
+
+
+	}
+
+	c.Redirect("/draw", 302)
+
+
+
 
 }
 

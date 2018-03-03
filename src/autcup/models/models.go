@@ -19,6 +19,11 @@ type Score struct {
 	Score float32 `form:"score,number,score"`
 }
 
+type Draw struct {
+	Id int
+	TeamName string
+}
+
 func (a *Team) TableName() string {
 	return "teams"
 }
@@ -30,3 +35,8 @@ func (a *Challenge) TableName() string {
 func (a *Score) TableName() string {
 	return "scores"
 }
+
+func (a *Draw) TableName() string {
+	return "draws"
+}
+

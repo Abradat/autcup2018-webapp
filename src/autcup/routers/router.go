@@ -25,6 +25,9 @@ func init() {
 	beego.Router("/contact", &controllers.MainController{}, "get:ContactPage" )
 	beego.Router("/portfolio", &controllers.MainController{}, "get:PortfolioPage" )
 
+	beego.Router("/draw", &controllers.MainController{}, "get:DrawPage" )
+	beego.Router("/generate-draw", &controllers.MainController{}, "get:GenerateDraw" )
+
 
 	//Team table management
 	beego.Router("/manager/team/delete", &controllers.ManageController{}, "*:DeleteTeam")
